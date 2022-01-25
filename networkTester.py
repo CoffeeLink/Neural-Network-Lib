@@ -2,7 +2,7 @@ from distutils.log import error
 import NeuralNetwork
 from random import random
 
-network = NeuralNetwork.Network(6, 3, 4, 4)
+network = NeuralNetwork.Network(6, 4, 4, 3)
 
 def feedCheck(atempts = 100):
     errors = 0
@@ -22,3 +22,4 @@ def feedCheck(atempts = 100):
         print(f"with {errors} errors")
 
 feedCheck(10000)
+network.export("save.nns")

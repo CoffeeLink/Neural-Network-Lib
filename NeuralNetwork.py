@@ -2,6 +2,7 @@ import logging
 import math
 import numpy as np
 from random import randint, random
+import json
 
 #funkciok
 
@@ -35,7 +36,7 @@ class layer:
 class Network:
     hiddenLayers : list
     outLayer : layer
-    layers : int
+
     def __init__(self, inputNeurons, outputNeurons, layers = 2, neuronsPerLayer = 10, baseNetwork = None, debug=False):
         if debug:
             logging.basicConfig(level=logging.DEBUG)
@@ -43,7 +44,6 @@ class Network:
             logging.basicConfig(level=logging.INFO)
 
         # variables
-        self.layers = layers
         self.hiddenLayers = []
         # L1 weight matrix generation
         weightMatrix = []
@@ -99,3 +99,14 @@ class Network:
             dataVector = self.hiddenLayers[i].calculateNeurons(dataVector)
         return self.outLayer.calculateNeurons(dataVector)
 
+    def export(self, name):
+        parsedNetwork = {"hiddenLayers": [], "outLayer": {}}
+        with open(name, "w") as file:
+            for i in range(len(self.hiddenLayers)):
+                layerDict = {"weights": self.hiddenLayers[i].weightMatrix, "biases": self.hiddenLayers[i].biasVector}
+                parsedNetwork["hiddenLayers"].append(layerDict)
+            parsedNetwork["outLayer"] = {"weights": self.outLayer.weightMatrix, "biases": self.outLayer.biasVector}
+            file.write(json.dumps(parsedNetwork))
+
+    def importNetwork(self, name):
+        pass
