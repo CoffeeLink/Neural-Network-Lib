@@ -1,7 +1,7 @@
 import NeuralNetwork
 from random import random
 
-network = NeuralNetwork.Network(4, 4, [6, 4, 4, 8])
+network = NeuralNetwork.Network(2, 2, [4, ], [1, 1, ])
 
 def feedCheck(atempts = 100):
     errors = 0
@@ -20,8 +20,23 @@ def feedCheck(atempts = 100):
     else:
         print(f"with {errors} errors")
 
-print(network.feed([1, 2, 3, 4,]))
+#network.importNetwork("save01.nns")
 
-network.importNetwork("export.nns")
+network.clearPatterns()
 
-print(network.feed([0, 1]))
+network.addPattern([0, 1], [1, 0])
+network.addPattern([1, 0], [1, 0])
+network.addPattern([1, 1], [1, 0])
+network.addPattern([0, 0], [0, 1])
+
+
+network.backpropogate(20000, 0.45)
+
+print(network.feed(inputVector=[1, 0]))
+print(network.feed(inputVector=[0, 1]))
+
+print(network.feed(inputVector=[1, 1]))
+print(network.feed(inputVector=[0, 0]))
+
+network.exportNetwork("save01.nns")
+
