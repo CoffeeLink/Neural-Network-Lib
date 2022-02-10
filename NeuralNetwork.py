@@ -226,27 +226,44 @@ class Network:
     def clearPatterns(self):
         self.patterns = []
     def backpropogate(self, epochs : int, learningRate : int):
-        for epoch in range(epochs):
-            for layer in self.Layers:
-                layer.dNodes = []
-                layer.deltaNodes = []
-                layer.dWeights = []
-            for patternIndex in range(len(self.patterns)):
-                out = self.feed(self.patterns[patternIndex][0])
-                errors = []
-                dErrors = []
-                for i in range(len(out)):
-                    errors.append((math.pow(out[i] - self.patterns[patternIndex][1][i], 2) )/ 2)
-                    dErrors.append(out[i] - self.patterns[patternIndex][1][i])
+        for epoch in range(epochs): #epoch loop
+            for layer in self.Layers: #layer meta data tisztogatás
+                layer.dNodes = [] #derivált node 
+                layer.deltaNodes = [] #idk 
+                layer.dWeights = [] # derivált suly
 
-                for i in range(len(self.Layers))[::-1]:
-                    self.Layers[i].dWeights.append([])
+            for patternIndex in range(len(self.patterns)):         #patern szelekcio
+                out = self.feed(self.patterns[patternIndex][0])    # output for the cost func and the error comparison
+
+                errors = [] #'cost' 
+                dErrors = []#'derivált cost'
+
+                for i in range(len(out)): #error calculation loop
+                    errors.append((math.pow(out[i] - self.patterns[patternIndex][1][i], 2))/ 2) #fél rövidittet cost matek rész a readme ben
+                    dErrors.append(out[i] - self.patterns[patternIndex][1][i]) # derivált|cost 
+
+                for i in range(len(self.Layers))[::-1]: #back propogation loop szó szerint
+                    self.Layers[i].dWeights.append([]) #minden layernek egy derivált suly és deltakimenet kell
                     self.Layers[i].deltaNodes.append([])
+                    
                     if i == (len(self.Layers) -1):
                         self.Layers[i].deltaNodes[patternIndex] = np.dot(dErrors, self.Layers[i].dNodes[patternIndex])
-                    elif i != 0:
-                        self.Layers[i].deltaNodes[patternIndex] = np.dot(np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix), self.Layers[i + 1].deltaNodes[patternIndex])
+                        #debug vars
+                        dnode = self.Layers[i].dNodes[patternIndex] 
+                        dnode_derr_sum = np.dot(dErrors, self.Layers[i].dNodes[patternIndex])
+                        #dbve
 
+                    elif i != 0:
+                        
+                        #debug variables
+                        dnode2 = self.Layers[i].dNodes[patternIndex]
+                        lplus1Matrix = self.Layers[i + 1].weightMatrix
+                        sumlast = np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix)
+                        deltaNodePlus1 = np.array(self.Layers[i + 1].deltaNodes[patternIndex])
+
+                        sumarry = np.dot(self.Layers[i + 1].deltaNodes[patternIndex], np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix))
+                        #ddve
+                        self.Layers[i].deltaNodes[patternIndex] = np.dot(np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix), np.array(self.Layers[i + 1].deltaNodes[patternIndex]))
                     if i != 0:
                         self.Layers[i].dWeights[patternIndex] = np.outer(self.Layers[i].deltaNodes[patternIndex], self.Layers[i - 1].outs)
 
@@ -262,8 +279,4 @@ class Network:
 
                     self.Layers[i].biasVector = (np.array(self.Layers[i].biasVector) - np.array(self.Layers[i].deltaNodes[patternIndex]).dot(learningRate)).tolist()
             
-        print("Backpropogation Finished!")
-                    
-                    
-            
-
+        print("Backpropogation Finished!") #nice

@@ -1,7 +1,8 @@
 import NeuralNetwork
 from random import random
 
-network = NeuralNetwork.Network(2, 2, [4, ], [1, 1, ])
+network = NeuralNetwork.Network(9, 4, [10, 10], [1, 1, 1])
+network.clearPatterns()
 
 def feedCheck(atempts = 100):
     errors = 0
@@ -20,23 +21,12 @@ def feedCheck(atempts = 100):
     else:
         print(f"with {errors} errors")
 
-#network.importNetwork("save01.nns")
 
-network.clearPatterns()
+network.addPattern([1,0,1,0,1,0,1,0,1], [1, 0, 0, 0])# x
+network.addPattern([0,1,0,1,0,1,0,1,0], [0, 1, 0, 0])# +
+network.addPattern([0,0,0,1,1,1,0,0,0], [0, 0, 1, 0])# -
+network.addPattern([0,0,1,0,1,0,1,0,0], [0, 0, 0, 1])# /
 
-network.addPattern([0, 1], [1, 0])
-network.addPattern([1, 0], [1, 0])
-network.addPattern([1, 1], [1, 0])
-network.addPattern([0, 0], [0, 1])
+network.backpropogate(1200, 0.3)
 
-
-network.backpropogate(20000, 0.45)
-
-print(network.feed(inputVector=[1, 0]))
-print(network.feed(inputVector=[0, 1]))
-
-print(network.feed(inputVector=[1, 1]))
-print(network.feed(inputVector=[0, 0]))
-
-network.exportNetwork("save01.nns")
-
+print(f"#-#\n-#-\n#-#\n {network.feed([1,0,1,0,1,0,1,0,1])}")
