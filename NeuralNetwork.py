@@ -261,9 +261,9 @@ class Network:
                         sumlast = np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix)
                         deltaNodePlus1 = np.array(self.Layers[i + 1].deltaNodes[patternIndex])
 
-                        sumarry = np.dot(self.Layers[i + 1].deltaNodes[patternIndex], np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix))
+                        sumarry = np.dot(self.Layers[i + 1].deltaNodes[patternIndex], np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix)) # ez az a rész csak s sum ami 266 nál van csak ki szedve értékkekel hogy vscode debugban lehet majd turkálni a memoriába
                         #ddve
-                        self.Layers[i].deltaNodes[patternIndex] = np.dot(np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix), np.array(self.Layers[i + 1].deltaNodes[patternIndex]))
+                        self.Layers[i].deltaNodes[patternIndex] = np.dot(np.dot(self.Layers[i].dNodes[patternIndex], self.Layers[i + 1].weightMatrix), np.array(self.Layers[i + 1].deltaNodes[patternIndex])) # a fö szorzás nem megy a delta node Plus 1 var az a belsö szorzo
                     if i != 0:
                         self.Layers[i].dWeights[patternIndex] = np.outer(self.Layers[i].deltaNodes[patternIndex], self.Layers[i - 1].outs)
 

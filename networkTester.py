@@ -27,6 +27,11 @@ network.addPattern([0,1,0,1,0,1,0,1,0], [0, 1, 0, 0])# +
 network.addPattern([0,0,0,1,1,1,0,0,0], [0, 0, 1, 0])# -
 network.addPattern([0,0,1,0,1,0,1,0,0], [0, 0, 0, 1])# /
 
-network.backpropogate(1200, 0.3)
+network.backpropogate(5000, 1)
 
-print(f"#-#\n-#-\n#-#\n {network.feed([1,0,1,0,1,0,1,0,1])}")
+print(f"x {network.feed([1,0,1,0,1,0,1,0,1])}")
+print(f"+ {network.feed([0,1,0,1,0,1,0,1,0])}")
+#print(f"#-#\n-#-\n#-#\n {network.feed([1,0,1,0,1,0,1,0,1])}")
+#print(f"#-#\n-#-\n#-#\n {network.feed([1,0,1,0,1,0,1,0,1])}")
+
+network.exportNetwork("recog01.nns")
