@@ -1,8 +1,4 @@
 # Neural Network Lib
  A neural network libary for python
-
-
-
- backpropogation math:
-    deriválás, lecsuszás a lejtőn xd
+WARNING : I put This project on hault forr te moment but i may finnish it later(it as some bugs and unfinished code)
     
